@@ -1,0 +1,5 @@
+string command
+int32 table_number
+---
+bool success
+string message
