@@ -14,15 +14,24 @@ class OrderManager(Node):
         )
         self.goal_pub_ = self.create_publisher(Point, '/goal_position', 10)
         self.get_logger().info('Service server started')
+        self.declare_parameter('table_x_coords', [2.0, 5.0, 8.0])
+        self.declare_parameter('table_y_coords', [2.0, 5.0, 8.0])
+        self.table_x = self.get_parameter('table_x_coords').value
+        self.table_y = self.get_parameter('table_y_coords').value
 
     def callback_service(self, request, response):
         if request.command == 'add_order':
             point = Point()
-            point.x = float(request.table_number)
-            point.y = float(request.table_number)
-            self.goal_pub_.publish(point)
-            response.success = True
-            response.message = f'Order sent to table {request.table_number}'
+            index = request.table_number - 1
+            if 0 <= index < len(self.table_x):
+                point.x = self.table_x[index]
+                point.y = self.table_y[index]
+                self.goal_pub_.publish(point)
+                response.success = True
+                response.message = f'Order sent to table {request.table_number}'
+            else:
+                response.success = False
+                response.message = f'Invalid table number {request.table_number}'
         else:
             response.success = False
             response.message = 'Unknown command'
