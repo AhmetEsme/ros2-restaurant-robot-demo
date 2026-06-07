@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'robot_controller = restaurant_robot.robot_controller:main',
             'table_status_publisher = restaurant_robot.table_status_publisher:main',
+            'order_manager = restaurant_robot.order_manager:main',
         ],
     },
 )
