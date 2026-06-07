@@ -1,7 +1,8 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Point
-
+from geometry_msgs.msg import Twist
+from turtlesim.msg import Pose
 
 class RobotController(Node):
     def __init__(self):
@@ -12,10 +13,30 @@ class RobotController(Node):
             self.listener_callback,
             10  # QoS queue size
         )
+        self.cmd_pub_ = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
+        self.pose_sub_ = self.create_subscription(Pose, '/turtle1/pose', self.pose_callback, 10)
+        self.goal_ = None
         self.get_logger().info('Subscriber started')
 
     def listener_callback(self, msg):
+        self.goal_ = msg
         self.get_logger().info(f'Received goal: x={msg.x}, y={msg.y}')
+        
+    def pose_callback(self, pose):
+        if self.goal_ is None:
+            return
+
+        import math
+        dx = self.goal_.x - pose.x
+        dy = self.goal_.y - pose.y
+        distance = math.sqrt(dx*dx + dy*dy)
+
+        cmd = Twist()
+        if distance > 0.1:
+            angle_to_goal = math.atan2(dy, dx)
+            cmd.linear.x = 1.5 * distance
+            cmd.angular.z = 6.0 * (angle_to_goal - pose.theta)
+        self.cmd_pub_.publish(cmd)
 
 
 def main(args=None):
