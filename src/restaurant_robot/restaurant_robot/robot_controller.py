@@ -3,6 +3,7 @@ from rclpy.node import Node
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
+from std_msgs.msg import String
 
 class RobotController(Node):
     def __init__(self):
@@ -14,6 +15,7 @@ class RobotController(Node):
             10  # QoS queue size
         )
         self.cmd_pub_ = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
+        self.delivery_pub_ = self.create_publisher(String, 'delivery_status', 10)
         self.pose_sub_ = self.create_subscription(Pose, '/turtle1/pose', self.pose_callback, 10)
         self.goal_ = None
         self.get_logger().info('Subscriber started')
@@ -36,6 +38,12 @@ class RobotController(Node):
             angle_to_goal = math.atan2(dy, dx)
             cmd.linear.x = 1.5 * distance
             cmd.angular.z = 6.0 * (angle_to_goal - pose.theta)
+        else:
+            msg = String()
+            msg.data = f'Delivered to table at ({self.goal_.x}, {self.goal_.y})'
+            self.delivery_pub_.publish(msg)
+            self.get_logger().info(msg.data)
+            self.goal_ = None
         self.cmd_pub_.publish(cmd)
 
 
