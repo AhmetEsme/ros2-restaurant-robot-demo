@@ -30,6 +30,7 @@ setup(
             'table_status_publisher = restaurant_robot.table_status_publisher:main',
             'order_manager = restaurant_robot.order_manager:main',
             'monitor = restaurant_robot.monitor:main',
+            'demo = restaurant_robot.demo_runner:main',
         ],
     },
 )

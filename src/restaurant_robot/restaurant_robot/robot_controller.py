@@ -36,7 +36,7 @@ class RobotController(Node):
         cmd = Twist()
         if distance > 0.1:
             angle_to_goal = math.atan2(dy, dx)
-            cmd.linear.x = 1.5 * distance
+            cmd.linear.x = 0.7 * distance
             cmd.angular.z = 6.0 * (angle_to_goal - pose.theta)
         else:
             msg = String()
