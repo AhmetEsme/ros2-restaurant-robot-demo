@@ -7,7 +7,7 @@ from std_msgs.msg import String
 class DemoRunner(Node):
     def __init__(self):
         super().__init__('demo_runner')
-        self.tables = [1, 2, 3]
+        self.tables = [1, 2, 3, 4, 5]
         self.current_index = 0
         self._pending_timer = None
         self.client_ = self.create_client(OrderCommand, 'order_command')
@@ -15,7 +15,7 @@ class DemoRunner(Node):
             String, 'delivery_status', self.on_delivery, 10)
         while not self.client_.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('Waiting for order_command service...')
-        self.get_logger().info('Demo Runner started — visiting tables 1, 2, 3\nデモ開始 — テーブル1, 2, 3 を順番に訪問')
+        self.get_logger().info('Demo Runner started — visiting tables 1, 2, 3, 4, 5\nデモ開始 — テーブル1, 2, 3, 4, 5 を順番に訪問')
         self.send_next_order()
 
     def send_next_order(self):
