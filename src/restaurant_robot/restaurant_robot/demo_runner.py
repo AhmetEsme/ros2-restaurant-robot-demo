@@ -34,9 +34,9 @@ class DemoRunner(Node):
         self.get_logger().info(f'Delivered: {msg.data}')
         self.current_index += 1
         if self.current_index < len(self.tables):
-            self._pending_timer = self.create_timer(3.0, self._on_timer)
+            self._pending_timer = self.create_timer(2.0, self._on_timer)
         else:
-            self.get_logger().info('All 3 tables done! / 全テーブル配達完了！')
+            self.get_logger().info('All 5 tables done! / 全テーブル配達完了！')
 
     def _on_timer(self):
         if self._pending_timer:
