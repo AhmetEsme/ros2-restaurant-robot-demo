@@ -90,8 +90,10 @@ Available tables / 利用可能なテーブル:
 | Table / テーブル | Coordinates / 座標 |
 |------------------|--------------------|
 | 1 | (2.0, 2.0) |
-| 2 | (5.0, 5.0) |
+| 2 | (8.0, 2.0) |
 | 3 | (8.0, 8.0) |
+| 4 | (2.0, 8.0) |
+| 5 | (5.5, 5.5) |
 
 ### 4. Monitor Deliveries / 配達状況の監視
 
@@ -121,6 +123,7 @@ restaurant_robot_ws/
 │       └── msg/TableStatus.msg
 └── docs/
     ├── architecture.png
+    ├── demo.gif
     └── rqt_graph.png
 ```
 
@@ -153,8 +156,8 @@ Edit `config/params.yaml` to change table positions:
 ```yaml
 order_manager:
   ros__parameters:
-    table_x_coords: [2.0, 5.0, 8.0]
-    table_y_coords: [2.0, 5.0, 8.0]
+    table_x_coords: [2.0, 8.0, 8.0, 2.0, 5.5]
+    table_y_coords: [2.0, 2.0, 8.0, 8.0, 5.5]
 ```
 
 ---
